@@ -15,20 +15,20 @@ mkdir -p build/$config_type && cmake -DCMAKE_BUILD_TYPE=$config_type -H. -Bbuild
 cd build/$config_type
 make
 ```
-Using the debug option adds the -g flag for GDB debugging.
+Using the ```debug``` option adds the ```-g``` flag for GDB debugging.
 
 
 
 ## To-do
 
 1) Implement Monte Carlo pricing for general option
-----implement plotting of price paths
-    ----plot price paths over time
-    ----plot histogram of terminal prices and vertical line at strike
-    ----plot histogram of discounted payoffs and overlay with a gaussian w/ mean and std
-    ----plot cumulative mean as a function of Monte Carlo time vs line at BSM value
-----think about how best to initialize RandomEngine
-----implement threadsafe parallelization (check out TRNG)
-----implement path dependent options, including Asian and Knockout/in options
+    * implement plotting of price paths
+        * plot price paths over time
+        * plot histogram of terminal prices and vertical line at strike
+        * plot histogram of discounted payoffs and overlay with a gaussian w/ mean and std
+        * plot cumulative mean as a function of Monte Carlo time vs line at BSM value
+    * initialize RandomEngine optimally
+    * implement threadsafe parallelization (check out TRNG package)
+    * implement path dependent options, including Asian and Knockout/in options
 
 2) Implement binomial asset pricing model
