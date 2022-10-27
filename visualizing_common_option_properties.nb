@@ -1,0 +1,591 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     22971,        583]
+NotebookOptionsPosition[     21273,        547]
+NotebookOutlinePosition[     21608,        562]
+CellTagsIndexPosition[     21565,        559]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ZeroCouponBondPayoff", "[", 
+   RowBox[{"RiskFree_", ",", "Maturity_"}], "]"}], ":=", 
+  "1"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ForwardContractPayoff", "[", 
+   RowBox[{"Spot_", ",", "Strike_"}], "]"}], ":=", 
+  RowBox[{"Spot", "-", "Strike"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"CallOptionPayoff", "[", 
+   RowBox[{"Spot_", ",", "Strike_"}], "]"}], ":=", 
+  RowBox[{"Max", "[", 
+   RowBox[{
+    RowBox[{"Spot", "-", "Strike"}], ",", "0"}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"PutOptionPayoff", "[", 
+   RowBox[{"Spot_", ",", "Strike_"}], "]"}], ":=", 
+  RowBox[{"Max", "[", 
+   RowBox[{
+    RowBox[{"Strike", "-", "Spot"}], ",", "0"}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"DigitalCallOptionPayoff", "[", 
+   RowBox[{"Spot_", ",", "Strike_"}], "]"}], ":=", 
+  RowBox[{"HeavisideTheta", "[", 
+   RowBox[{"Spot", "-", "Strike"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"DigitalPutOptionPayoff", "[", 
+   RowBox[{"Spot_", ",", "Strike_"}], "]"}], ":=", 
+  RowBox[{"HeavisideTheta", "[", 
+   RowBox[{"Strike", "-", "Spot"}], "]"}]}]}], "Input",
+ CellChangeTimes->{{3.865695595889269*^9, 3.865695648392281*^9}, {
+  3.8656956847123938`*^9, 3.8656957133747463`*^9}, {3.865695748728939*^9, 
+  3.865695748846136*^9}, {3.865695847534739*^9, 3.865695904747117*^9}, {
+  3.865697910057172*^9, 3.865697921461755*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"2ee70c7b-7034-4ab6-a8d9-aecc1a6c13b5"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ZeroCouponBondPrice", "[", 
+   RowBox[{"RiskFree_", ",", "Maturity_"}], "]"}], ":=", 
+  RowBox[{"Exp", "[", 
+   RowBox[{
+    RowBox[{"-", "RiskFree"}], "*", "Maturity"}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ForwardContractPrice", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"Spot_", ",", "Dividend_", ",", " ", "Vol_"}], "}"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"Strike_", ",", "Expiry_"}], "}"}], ",", "RiskFree_"}], "]"}], ":=", 
+  RowBox[{
+   RowBox[{"Exp", "[", 
+    RowBox[{
+     RowBox[{"-", "RiskFree"}], "*", "Expiry"}], "]"}], 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Exp", "[", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"RiskFree", "-", "Dividend"}], ")"}], "*", "Expiry"}], "]"}],
+       "Spot"}], "-", "Strike"}], ")"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"CallPutOptionPrice", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"Spot_", ",", "Dividend_", ",", " ", "Vol_"}], "}"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"Strike_", ",", "Expiry_"}], "}"}], ",", "RiskFree_"}], "]"}], ":=", 
+  RowBox[{"Module", "[", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"x", ",", "d1", ",", "d2"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"x", "=", 
+      RowBox[{
+       RowBox[{"Log", "[", 
+        RowBox[{"Spot", "/", "Strike"}], "]"}], "+", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"RiskFree", "-", "Dividend"}], ")"}], "*", "Expiry"}]}]}], 
+     ";", "\[IndentingNewLine]", 
+     RowBox[{"d1", "=", 
+      FractionBox[
+       RowBox[{"x", "+", 
+        RowBox[{"0.5", 
+         SuperscriptBox["Vol", "2"], "*", "Expiry"}]}], 
+       RowBox[{"Vol", "*", 
+        RowBox[{"Sqrt", "[", "Expiry", "]"}]}]]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"d2", "=", 
+      FractionBox[
+       RowBox[{"x", "-", 
+        RowBox[{"0.5", 
+         SuperscriptBox["Vol", "2"], "*", "Expiry"}]}], 
+       RowBox[{"Vol", "*", 
+        RowBox[{"Sqrt", "[", "Expiry", "]"}]}]]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Spot", "*", 
+         RowBox[{"Exp", "[", 
+          RowBox[{
+           RowBox[{"-", "Dividend"}], "*", "Expiry"}], "]"}], "*", 
+         RowBox[{"CDF", "[", 
+          RowBox[{
+           RowBox[{"NormalDistribution", "[", 
+            RowBox[{"0", ",", "1"}], "]"}], ",", "d1"}], "]"}]}], 
+        "\[IndentingNewLine]", "-", 
+        RowBox[{"Strike", "*", 
+         RowBox[{"Exp", "[", 
+          RowBox[{
+           RowBox[{"-", "RiskFree"}], "*", "Expiry"}], "]"}], "*", 
+         RowBox[{"CDF", "[", 
+          RowBox[{
+           RowBox[{"NormalDistribution", "[", 
+            RowBox[{"0", ",", "1"}], "]"}], ",", "d2"}], "]"}]}]}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"-", "Spot"}], "*", 
+         RowBox[{"Exp", "[", 
+          RowBox[{
+           RowBox[{"-", "Dividend"}], "*", "Expiry"}], "]"}], "*", 
+         RowBox[{"CDF", "[", 
+          RowBox[{
+           RowBox[{"NormalDistribution", "[", 
+            RowBox[{"0", ",", "1"}], "]"}], ",", 
+           RowBox[{"-", "d1"}]}], "]"}]}], "\[IndentingNewLine]", "+", 
+        RowBox[{"Strike", "*", 
+         RowBox[{"Exp", "[", 
+          RowBox[{
+           RowBox[{"-", "RiskFree"}], "*", "Expiry"}], "]"}], "*", 
+         RowBox[{"CDF", "[", 
+          RowBox[{
+           RowBox[{"NormalDistribution", "[", 
+            RowBox[{"0", ",", "1"}], "]"}], ",", 
+           RowBox[{"-", "d2"}]}], "]"}]}]}]}], "}"}]}]}], 
+   "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"DigitalCallPutOptionPrice", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"Spot_", ",", "Dividend_", ",", " ", "Vol_"}], "}"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"Strike_", ",", "Expiry_"}], "}"}], ",", "RiskFree_"}], "]"}], ":=", 
+  RowBox[{"Module", "[", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"x", ",", "d1", ",", "d2"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"x", "=", 
+      RowBox[{
+       RowBox[{"Log", "[", 
+        RowBox[{"Spot", "/", "Strike"}], "]"}], "+", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"RiskFree", "-", "Dividend"}], ")"}], "*", "Expiry"}]}]}], 
+     ";", "\[IndentingNewLine]", 
+     RowBox[{"d2", "=", 
+      FractionBox[
+       RowBox[{"x", "-", 
+        RowBox[{"0.5", 
+         SuperscriptBox["Vol", "2"], "*", "Expiry"}]}], 
+       RowBox[{"Vol", "*", 
+        RowBox[{"Sqrt", "[", "Expiry", "]"}]}]]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Exp", "[", 
+         RowBox[{
+          RowBox[{"-", "RiskFree"}], "*", "Expiry"}], "]"}], "*", 
+        RowBox[{"CDF", "[", 
+         RowBox[{
+          RowBox[{"NormalDistribution", "[", 
+           RowBox[{"0", ",", "1"}], "]"}], ",", "d2"}], "]"}]}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Exp", "[", 
+         RowBox[{
+          RowBox[{"-", "RiskFree"}], "*", "Expiry"}], "]"}], "*", 
+        RowBox[{"CDF", "[", 
+         RowBox[{
+          RowBox[{"NormalDistribution", "[", 
+           RowBox[{"0", ",", "1"}], "]"}], ",", 
+          RowBox[{"-", "d2"}]}], "]"}]}]}], "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]}], "Input",
+ CellChangeTimes->{{3.865695780334299*^9, 3.8656958163725452`*^9}, {
+  3.865697760578226*^9, 3.865697817376822*^9}, {3.865697865377029*^9, 
+  3.865698163625181*^9}, {3.865698237439752*^9, 3.865698239621441*^9}, {
+  3.865698402312727*^9, 3.865698523850905*^9}, {3.865698567596753*^9, 
+  3.8656986190549707`*^9}, {3.865698659087125*^9, 3.865698685387946*^9}, {
+  3.865698855975938*^9, 3.8656988750684834`*^9}, {3.8656991087719793`*^9, 
+  3.865699165672295*^9}},
+ CellLabel->"In[7]:=",ExpressionUUID->"07ba7797-551f-48cc-9d5b-56dfe023dff2"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"div", ",", "vol"}], "}"}], "=", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"0", "/", "100"}], ",", 
+       RowBox[{"10", "/", "100"}]}], "}"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"strike", ",", "exp"}], "}"}], "=", 
+     RowBox[{"{", 
+      RowBox[{"100", ",", "exp"}], "}"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"rfrate", "=", 
+     RowBox[{"2", "/", "100"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Plot", "[", 
+     RowBox[{
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"CallOptionPayoff", "[", 
+         RowBox[{"spot", ",", "strike"}], "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"PutOptionPayoff", "[", 
+         RowBox[{"spot", ",", "strike"}], "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"CallPutOptionPrice", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"spot", ",", "div", ",", "vol"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"strike", ",", "exp"}], "}"}], ",", "rfrate"}], "]"}], 
+         "[", 
+         RowBox[{"[", "1", "]"}], "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"CallPutOptionPrice", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"spot", ",", "div", ",", "vol"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"strike", ",", "exp"}], "}"}], ",", "rfrate"}], "]"}], 
+         "[", 
+         RowBox[{"[", "2", "]"}], "]"}]}], "\[IndentingNewLine]", "}"}], ",", 
+      
+      RowBox[{"{", 
+       RowBox[{"spot", ",", "50", ",", "150"}], "}"}]}], "]"}]}], 
+   "\[IndentingNewLine]", ",", 
+   RowBox[{"{", 
+    RowBox[{"exp", ",", "0.01", ",", "2"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.8656981722485847`*^9, 3.865698323730073*^9}, {
+  3.865698356627954*^9, 3.86569837730365*^9}, {3.865698530004726*^9, 
+  3.865698550498664*^9}, {3.865698647662142*^9, 3.8656986526854362`*^9}, {
+  3.8656987113493853`*^9, 3.865698837189229*^9}, {3.865698877526105*^9, 
+  3.865698935712386*^9}, {3.8656989907607307`*^9, 3.865699070635749*^9}},
+ CellLabel->
+  "In[126]:=",ExpressionUUID->"8ed9e90b-9683-43e6-9ae6-792d672efecd"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`exp$$ = 2., Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
+      Hold[$CellContext`exp$$], 0.01, 2}}, Typeset`size$$ = {
+    360., {110., 114.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`exp$578970$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {$CellContext`exp$$ = 0.01}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`exp$$, $CellContext`exp$578970$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, 
+      "Body" :> ({$CellContext`div, $CellContext`vol} = {
+         0/100, 10/100}; {$CellContext`strike, $CellContext`exp$$} = {
+         100, $CellContext`exp$$}; $CellContext`rfrate = 2/100; Plot[{
+          $CellContext`CallOptionPayoff[$CellContext`spot, \
+$CellContext`strike], 
+          $CellContext`PutOptionPayoff[$CellContext`spot, \
+$CellContext`strike], 
+          Part[
+           $CellContext`CallPutOptionPrice[{$CellContext`spot, \
+$CellContext`div, $CellContext`vol}, {$CellContext`strike, \
+$CellContext`exp$$}, $CellContext`rfrate], 1], 
+          Part[
+           $CellContext`CallPutOptionPrice[{$CellContext`spot, \
+$CellContext`div, $CellContext`vol}, {$CellContext`strike, \
+$CellContext`exp$$}, $CellContext`rfrate], 2]}, {$CellContext`spot, 50, 
+          150}]), "Specifications" :> {{$CellContext`exp$$, 0.01, 2}}, 
+      "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{405., {155., 161.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{{3.8656983006764183`*^9, 3.8656983783614902`*^9}, 
+   3.865698628907054*^9, {3.865698688544269*^9, 3.8656987128254957`*^9}, {
+   3.8656987529110413`*^9, 3.86569879362729*^9}, {3.8656988290994368`*^9, 
+   3.865698837421372*^9}, 3.8656988865465717`*^9, {3.8656989252687063`*^9, 
+   3.865698936488484*^9}, {3.8656989937710543`*^9, 3.8656990084636087`*^9}, 
+   3.865699070941083*^9},
+ CellLabel->
+  "Out[126]=",ExpressionUUID->"59415b3d-39a3-4797-a50d-f5be92bc4739"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"div", ",", "vol"}], "}"}], "=", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"0", "/", "100"}], ",", 
+       RowBox[{"10", "/", "100"}]}], "}"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"strike", ",", "exp"}], "}"}], "=", 
+     RowBox[{"{", 
+      RowBox[{"100", ",", "exp"}], "}"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"rfrate", "=", 
+     RowBox[{"2", "/", "100"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Plot", "[", 
+     RowBox[{
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"DigitalCallOptionPayoff", "[", 
+         RowBox[{"spot", ",", "strike"}], "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"DigitalPutOptionPayoff", "[", 
+         RowBox[{"spot", ",", "strike"}], "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"DigitalCallPutOptionPrice", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"spot", ",", "div", ",", "vol"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"strike", ",", "exp"}], "}"}], ",", "rfrate"}], "]"}], 
+         "[", 
+         RowBox[{"[", "1", "]"}], "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"DigitalCallPutOptionPrice", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"spot", ",", "div", ",", "vol"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"strike", ",", "exp"}], "}"}], ",", "rfrate"}], "]"}], 
+         "[", 
+         RowBox[{"[", "2", "]"}], "]"}]}], "\[IndentingNewLine]", "}"}], ",", 
+      
+      RowBox[{"{", 
+       RowBox[{"spot", ",", "50", ",", "150"}], "}"}]}], "]"}]}], 
+   "\[IndentingNewLine]", ",", 
+   RowBox[{"{", 
+    RowBox[{"exp", ",", "0.01", ",", "2"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.865699179975812*^9, 3.86569919083878*^9}, {
+  3.8656992253608027`*^9, 3.8656992371229763`*^9}, {3.8656992771578407`*^9, 
+  3.865699301746479*^9}},
+ CellLabel->
+  "In[136]:=",ExpressionUUID->"e1b98fc4-2428-44ad-a557-4e071df8219f"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`exp$$ = 0.542, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
+      Hold[$CellContext`exp$$], 0.01, 2}}, Typeset`size$$ = {
+    360., {109., 113.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`exp$879985$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {$CellContext`exp$$ = 0.01}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`exp$$, $CellContext`exp$879985$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, 
+      "Body" :> ({$CellContext`div, $CellContext`vol} = {
+         0/100, 10/100}; {$CellContext`strike, $CellContext`exp$$} = {
+         100, $CellContext`exp$$}; $CellContext`rfrate = 2/100; Plot[{
+          $CellContext`DigitalCallOptionPayoff[$CellContext`spot, \
+$CellContext`strike], 
+          $CellContext`DigitalPutOptionPayoff[$CellContext`spot, \
+$CellContext`strike], 
+          Part[
+           $CellContext`DigitalCallPutOptionPrice[{$CellContext`spot, \
+$CellContext`div, $CellContext`vol}, {$CellContext`strike, \
+$CellContext`exp$$}, $CellContext`rfrate], 1], 
+          Part[
+           $CellContext`DigitalCallPutOptionPrice[{$CellContext`spot, \
+$CellContext`div, $CellContext`vol}, {$CellContext`strike, \
+$CellContext`exp$$}, $CellContext`rfrate], 2]}, {$CellContext`spot, 50, 
+          150}]), "Specifications" :> {{$CellContext`exp$$, 0.01, 2}}, 
+      "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{405., {154., 160.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{{3.865699197147244*^9, 3.865699237539056*^9}, {
+  3.86569930569973*^9, 3.8656993081680727`*^9}},
+ CellLabel->
+  "Out[136]=",ExpressionUUID->"c96489c7-f12d-40c4-9c9f-92c2866311b7"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"next", ":", " ", 
+    RowBox[{"compute", " ", "delta"}]}], ",", " ", 
+   RowBox[{
+    RowBox[{"vega", ".", " ", "esp"}], " ", "since", " ", "i", " ", "think", 
+    " ", "vega", " ", "is", " ", "more", " ", "sensitive", " ", "for", " ", 
+    "digital", " ", "options"}]}], "*)"}]], "Input",
+ CellChangeTimes->{{3.865699350406535*^9, 
+  3.865699398173821*^9}},ExpressionUUID->"0068c77e-3202-4db2-b15f-\
+b7a8ca6ae48c"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"CallPutOptionPrice", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"100", ",", 
+      RowBox[{"2", "/", "100"}], ",", " ", 
+      RowBox[{"20", "/", "100"}]}], "}"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"110", ",", "1.0"}], "}"}], ",", 
+    RowBox[{"5.0", "/", "100"}]}], "]"}], "[", 
+  RowBox[{"[", "1", "]"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"DigitalCallPutOptionPrice", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"100", ",", 
+      RowBox[{"2", "/", "100"}], ",", " ", 
+      RowBox[{"20", "/", "100"}]}], "}"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"110", ",", "1.0"}], "}"}], ",", 
+    RowBox[{"5.0", "/", "100"}]}], "]"}], "[", 
+  RowBox[{"[", "1", "]"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.866991265665668*^9, 3.866991344631871*^9}, {
+  3.8669914687049007`*^9, 3.866991491125203*^9}, {3.866991788210371*^9, 
+  3.866991827063819*^9}, {3.866991873072844*^9, 3.866991874693737*^9}, {
+  3.866991928550549*^9, 3.866991929684841*^9}},
+ CellLabel->"In[36]:=",ExpressionUUID->"84f8ea3e-6895-442a-8d92-2f70be725bae"],
+
+Cell[BoxData["5.18858175378017`"], "Output",
+ CellChangeTimes->{{3.8669913379063997`*^9, 3.866991345058352*^9}, 
+   3.866991524915667*^9, {3.866991792109129*^9, 3.8669918273448*^9}, 
+   3.866991875314814*^9, {3.866991925577984*^9, 3.866991929913878*^9}},
+ CellLabel->"Out[36]=",ExpressionUUID->"2686fd9a-50d4-49d0-bd8e-0e58eeac46a7"],
+
+Cell[BoxData["0.31852224885323305`"], "Output",
+ CellChangeTimes->{{3.8669913379063997`*^9, 3.866991345058352*^9}, 
+   3.866991524915667*^9, {3.866991792109129*^9, 3.8669918273448*^9}, 
+   3.866991875314814*^9, {3.866991925577984*^9, 3.866991929916463*^9}},
+ CellLabel->"Out[37]=",ExpressionUUID->"f86b1a08-2798-4c0c-9cdd-58b522ac519d"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"NumberForm", "[", 
+  RowBox[{"0.31852224885323305`", ",", "12"}], "]"}]], "Input",
+ NumberMarks->False,
+ CellLabel->"In[38]:=",ExpressionUUID->"3786bf8c-9a0d-4a25-8941-ee65341fc260"],
+
+Cell[BoxData[
+ TagBox[
+  InterpretationBox["\<\"0.318522248853\"\>",
+   0.31852224885323305`,
+   AutoDelete->True],
+  NumberForm[#, 12]& ]], "Output",
+ CellChangeTimes->{3.866991934210335*^9},
+ CellLabel->
+  "Out[38]//NumberForm=",ExpressionUUID->"acbdb53b-3465-4b53-833b-\
+1567587a10b1"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"NumberForm", "[", 
+  RowBox[{"5.18858175378017`", ",", "12"}], "]"}]], "Input",
+ CellChangeTimes->{{3.866991880975947*^9, 3.8669918834936647`*^9}},
+ NumberMarks->False,
+ CellLabel->"In[31]:=",ExpressionUUID->"65ee411f-e43b-4d69-abca-916829d1b85d"],
+
+Cell[BoxData[
+ TagBox[
+  InterpretationBox["\<\"5.18858175378\"\>",
+   5.18858175378017,
+   AutoDelete->True],
+  NumberForm[#, 12]& ]], "Output",
+ CellChangeTimes->{{3.8669913379063997`*^9, 3.866991345058352*^9}, 
+   3.866991524915667*^9, {3.866991792109129*^9, 3.8669918273448*^9}, {
+   3.866991875316866*^9, 3.866991883839364*^9}},
+ CellLabel->
+  "Out[31]//NumberForm=",ExpressionUUID->"ff454597-0230-4280-9c4d-\
+1c91eeddcd16"]
+}, Open  ]]
+},
+WindowSize->{808, 747},
+WindowMargins->{{4, Automatic}, {Automatic, 4}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 1499, 37, 136, "Input",ExpressionUUID->"2ee70c7b-7034-4ab6-a8d9-aecc1a6c13b5"],
+Cell[2060, 59, 5864, 158, 553, "Input",ExpressionUUID->"07ba7797-551f-48cc-9d5b-56dfe023dff2"],
+Cell[CellGroupData[{
+Cell[7949, 221, 2305, 56, 241, "Input",ExpressionUUID->"8ed9e90b-9683-43e6-9ae6-792d672efecd"],
+Cell[10257, 279, 2765, 54, 335, "Output",ExpressionUUID->"59415b3d-39a3-4797-a50d-f5be92bc4739"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[13059, 338, 2141, 54, 241, "Input",ExpressionUUID->"e1b98fc4-2428-44ad-a557-4e071df8219f"],
+Cell[15203, 394, 2513, 50, 333, "Output",ExpressionUUID->"c96489c7-f12d-40c4-9c9f-92c2866311b7"]
+}, Open  ]],
+Cell[17731, 447, 468, 11, 52, "Input",ExpressionUUID->"0068c77e-3202-4db2-b15f-b7a8ca6ae48c"],
+Cell[CellGroupData[{
+Cell[18224, 462, 1084, 27, 52, "Input",ExpressionUUID->"84f8ea3e-6895-442a-8d92-2f70be725bae"],
+Cell[19311, 491, 333, 4, 34, "Output",ExpressionUUID->"2686fd9a-50d4-49d0-bd8e-0e58eeac46a7"],
+Cell[19647, 497, 336, 4, 34, "Output",ExpressionUUID->"f86b1a08-2798-4c0c-9cdd-58b522ac519d"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[20020, 506, 206, 4, 30, "Input",ExpressionUUID->"3786bf8c-9a0d-4a25-8941-ee65341fc260"],
+Cell[20229, 512, 288, 9, 79, "Output",ExpressionUUID->"acbdb53b-3465-4b53-833b-1567587a10b1"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[20554, 526, 271, 5, 30, "Input",ExpressionUUID->"65ee411f-e43b-4d69-abca-916829d1b85d"],
+Cell[20828, 533, 429, 11, 45, "Output",ExpressionUUID->"ff454597-0230-4280-9c4d-1c91eeddcd16"]
+}, Open  ]]
+}
+]
+*)
+
