@@ -17,8 +17,6 @@ make
 ```
 Using the ```debug``` option adds the ```-g``` flag for GDB debugging.
 
-
-
 ## To-do
 
 1) Implement Monte Carlo pricing for general option
